@@ -9,17 +9,17 @@ export default function HomePage() {
 
   useEffect(() => {
     (async () => {
-      let q = searchParams.get("q") ?? "All";
+      let q = searchParams.get("q") ?? "india";
       let language = searchParams.get("language") ?? "hi";
 
       let response = await fetch(
-        `https://newsapi.org/v2/everything?q=${q}&language=${language}&sortBy=publishedAt&apiKey=041d31fe69dd4d61953d2da0e7263b9a`,
+        `https://gnews.io/api/v4/search?q=${q}&lang=${language}&sortby=publishedAt&apikey=ad85b31d05f5f2181db3f95f52277434`,
       );
       response = await response.json();
       console.log(response);
-      if (response.status === "ok") {
+      if (response.articles) {
         setArticles(response.articles);
-        setTotalResults(response.totalResults);
+        setTotalResults(response.totalArticles);
       }
     })();
   }, [searchParams]); // ✅ re-fetches when q or language changes<h5 className="text-center text-light p-2 mt-1" style={{backgroundColor: "#ff6600"}}>
@@ -42,7 +42,7 @@ export default function HomePage() {
                 title={item.title}
                 description={item.description}
                 url={item.url}
-                pic={item.urlToImage}
+                pic={item.image}
                 date={item.publishedAt}
               />
             );
